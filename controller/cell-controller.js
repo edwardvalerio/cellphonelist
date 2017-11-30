@@ -1,6 +1,6 @@
 
 
-var application = function(app) {
+var application = function(app,db) {
 
 
 
@@ -9,19 +9,55 @@ var application = function(app) {
        next();
     })
 
-  /*  app.get('/', function(req,res){
 
-     res.send('test from controller');
 
-    }); */
-
-    app.get('/test/:id', function(req,res){
+    app.get('/test/:id', function(req,res) {
 
         var id = req.params.id;
-        console.log('id is = '+ id);
+        var newRef = db.push();
+        var key = newRef.key;
 
+       var data = {
+           name: 'cell phone',
+           id: id,
+           key: key
+       }
 
+     newRef.set(data, function(err) {
+
+         if(err) {
+              res.send({status: 'bad' });
+         }
+         else {
+           res.send({status: 'ok with id = ' + id });
+          }
+
+        });
     });
+
+
+    // API
+
+    app.get('/api/cellphones', function(req,res){
+
+
+        db.once('value', function(snapshot){
+
+            res.send(snapshot.val());
+
+        }, function (errorObject) {
+        res.send( errorObject.code );
+
+        });
+
+
+
+    })
+
+
+
+
+
 
 
 

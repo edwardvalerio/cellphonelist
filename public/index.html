@@ -1,16 +1,34 @@
 <!DOCTYPE html>
-<html lang="">
+<html ng-app="phonedirectory" lang="">
+
 <head>
     <meta charset="UTF-8">
-    <title>Index Page</title>
-	<meta name="Author" content=""/>
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Cell Phone Directory</title>
+    <meta name="Author" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="libs/angular.min.js"></script>
+    <script src="libs/release/angular-ui-router.min.js"></script>
+
+
+
+
+    <script src="controller/main.js"></script>
 </head>
-<body>
+
+<body ng-controller='cellphones'>
 
 
-<center><h1>Index</h1></center>
+    <center>
+    <h1>Index</h1>
+    <p ng-repeat="item in data" >{{item.key}}</p>
+    </center>
+
+
+<div ui-view></div>
 
 
 </body>
+
 </html>

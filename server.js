@@ -5,8 +5,22 @@ var bodyParser = require('body-parser');
 var routeController = require('./controller/cell-controller');
 
 
+// firebase
+var admin = require('firebase-admin');
+var serviceAccount = require('./services/credentials.json');
 
- // setup
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://cellphone-directory.firebaseio.com"
+});
+
+// database
+
+var database = admin.database().ref("/cellphones");
+// later var storage = admin.storage().ref("/images");
+
+
+// setup
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -20,9 +34,8 @@ app.use(bodyParser.json());
 
 // routes
 
-routeController(app);
+routeController(app, database);
 
 
 app.listen(port);
-
 console.log('listening on port: ' + port);
