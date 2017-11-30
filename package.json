@@ -1,0 +1,30 @@
+{
+  "name": "cellphone-directory",
+  "version": "1.0.0",
+  "description": "This is a cell phone directory using the FEAN stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardvalerio/cellphonelist.git"
+  },
+  "keywords": [
+    "FEAN",
+    "stack",
+    "angular",
+    "node",
+    "firebase"
+  ],
+  "author": "Edward Valerio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwardvalerio/cellphonelist/issues"
+  },
+  "homepage": "https://github.com/edwardvalerio/cellphonelist#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
