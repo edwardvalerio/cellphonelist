@@ -38,8 +38,8 @@ var application = function(app,db) {
 
     // API
 
+    // list
     app.get('/api/cellphones', function(req,res){
-
 
         db.once('value', function(snapshot){
 
@@ -50,9 +50,27 @@ var application = function(app,db) {
 
         });
 
+    });
+
+    // one single item
+
+      app.get('/api/cellphones/:key', function(req,res){
+
+       var key = req.params.key;
+
+       db.child(key).once('value', function(snapshot){
+
+        res.send(snapshot.val());
+
+        }, function (errorObject) {
+        res.send( errorObject.code );
+
+      });
 
 
-    })
+
+
+ });
 
 
 
