@@ -25,7 +25,9 @@
   "homepage": "https://github.com/edwardvalerio/cellphonelist#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "busboy": "^0.2.14",
     "express": "^4.16.2",
-    "firebase-admin": "^5.5.1"
+    "firebase-admin": "^5.5.1",
+    "multer": "^1.3.0"
   }
 }

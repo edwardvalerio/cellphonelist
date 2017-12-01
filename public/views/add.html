@@ -1,3 +1,35 @@
     <center>
-    <h1>Add form</h1>
+    <h1>Add Cellphone Form</h1>
     </center>
+
+
+    <center>
+
+    <div id="form">
+
+
+        <form class="form" name="form">
+
+            <input type="text" placeholder="Cell Name" required autofocus ng-model="form.name" /><br><br>
+            <input type="text" placeholder="Phone Brand" required ng-model="form.brand" /><br><br>
+
+            description:<br>
+            <textarea ng-model="form.description" required type="textarea"></textarea>
+
+
+            <br><br> upload image:<br>
+            <input id="file" type="file" ng-model="form.file" valid-file ng-required="true" />
+            <br><br>
+
+            <button ng-click="submit(form.$valid)">Submit</button>
+
+
+        </form>
+
+
+
+
+    </div>
+
+
+</center>
