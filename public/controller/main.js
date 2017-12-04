@@ -1,4 +1,4 @@
-var app = angular.module('phonedirectory',['ui.router']);
+var app = angular.module('phonedirectory',['ui.router', 'swxSessionStorage']);
 
 app.run(function($state,$rootScope) {
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
@@ -16,9 +16,9 @@ app.run(function($state,$rootScope) {
 });
 
 
-app.factory('Auth', function($http,$q,$timeout,$state,$rootScope){
+app.factory('Auth', function($http,$q,$timeout,$state,$rootScope, $window,$sessionStorage){
 
-    var profile = null;
+    var profile = null || $sessionStorage.get('profile');
 
 
     var login = function(em,pass) {
@@ -37,8 +37,9 @@ app.factory('Auth', function($http,$q,$timeout,$state,$rootScope){
 $http.post('/users/login', info).then(function(response){
 
 
-        profile = response.data;
-        $state.go('root.add');
+      profile = response.data;
+     $sessionStorage.put('profile', profile, 1 / 24);  // 1 hour expiration
+      $state.go('root.add');
       $rootScope.$broadcast('user:logged',profile);
 
 
@@ -56,8 +57,9 @@ $http.post('/users/login', info).then(function(response){
     var logout = function() {
 
         profile = null;
+        $sessionStorage.remove('profile');
 
-       $rootScope.$broadcast('user:logged',profile);
+        $rootScope.$broadcast('user:logged',profile);
         $state.go('root.login', {loginMsg: 'Logged out!'});
 
 
