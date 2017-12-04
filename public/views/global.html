@@ -4,9 +4,16 @@
         <li>
             <a ui-sref="root.main">Main</a>
         </li>
+        <li ng-if="!auth" >
+            <a ui-sref="root.login">Login</a>
+        </li>
         <li>
             <a ui-sref="root.add">Add CellPhone</a>
         </li>
+        <li ng-if="auth">
+            <a href="javascript:void(0)" ng-click="logout()">Logout</a>
+        </li>
+
     </ul>
 </div>
 

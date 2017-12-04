@@ -6,7 +6,8 @@ var fs = require('fs');
 
 
 
-var application = function(app,db, bucket, storage) {
+
+var application = function(app,db, bucket, storage, userService) {
 
 
 
@@ -16,30 +17,28 @@ var application = function(app,db, bucket, storage) {
     })
 
 
+    // Auto
 
-    app.get('/test/:id', function(req,res) {
+    app.post('/users/login', function(req,res){
 
-        var id = req.params.id;
-        var newRef = db.push();
-        var key = newRef.key;
 
-       var data = {
-           name: 'cell phone',
-           id: id,
-           key: key
-       }
 
-     newRef.set(data, function(err) {
+        userService.authenticate(req.body.email, req.body.pass,
 
-         if(err) {
-            res.status(500).send({ error: "boo:(" });
-         }
-         else {
-           res.send({status: 'ok' });
-          }
+         function(error, authData) {
 
-        });
+            if (error) {
+
+                res.status(401).send( error );
+
+            } else {
+                return res.status(200).send(authData);
+              }
+
+         });
+
     });
+
 
 
     // API
@@ -102,18 +101,7 @@ var application = function(app,db, bucket, storage) {
 
 
 
-
-
-
-
         });
-
-
-
-
-
-
-
 
 
 
@@ -152,7 +140,7 @@ var addToDBTask = function(req,res,db, bucket, storage, fPath, originalName) {
             data['key'] = key;
             data['imgURL'] = createPublicFileURL(uploadTo);
 
-          newRef.set(data, function(err) {
+            newRef.set(data, function(err) {
 
                  if(err) {
                      res.status(500).send({ error: "boo:(" });
@@ -174,11 +162,6 @@ var addToDBTask = function(req,res,db, bucket, storage, fPath, originalName) {
             });
 
        // end file upload
-
-
-
-
-
 
 }
 

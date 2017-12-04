@@ -37,6 +37,9 @@ var gcs = require('@google-cloud/storage')({
 
 var bucket = gcs.bucket(bucketName);
 
+// firebase client auth
+
+var userservice = require('./services/users/userService');
 
 
 
@@ -54,7 +57,7 @@ app.use(bodyParser.json());
 
 // routes
 
-routeController(app, database, bucket, storage);
+routeController(app, database, bucket, storage, userservice);
 
 
 app.listen(port);

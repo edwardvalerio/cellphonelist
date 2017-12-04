@@ -1,0 +1,10 @@
+<center><h1>Login</h1></center>
+
+<div id="customError" ng-show="customError"><center>{{ customError }}<br><br></center></div>
+<center>
+    <form ng-submit="loginuser()" name="login">
+       <input type="text" ng-model="email" placeholder="Email" required /><br><br>
+       <input type="password" ng-model="password" placeholder="Password" required><br><br>
+       <button type="submit">Login</button>
+    </form>
+</center>

@@ -1,6 +1,103 @@
 var app = angular.module('phonedirectory',['ui.router']);
 
-app.config(function($stateProvider, $urlRouterProvider){
+app.run(function($state,$rootScope) {
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+    event.preventDefault();
+
+   // listen for resolve errors
+
+    switch(error) {
+       case 'not_logged':
+          $state.go('root.login', {loginMsg: 'You need to be logged in to access that page!'});
+    }
+
+
+  });
+});
+
+
+app.factory('Auth', function($http,$q,$timeout,$state,$rootScope){
+
+    var profile = null;
+
+
+    var login = function(em,pass) {
+
+
+          var info = {
+
+            email: em,
+            pass: pass
+
+        }
+
+
+
+
+$http.post('/users/login', info).then(function(response){
+
+
+        profile = response.data;
+        $state.go('root.add');
+      $rootScope.$broadcast('user:logged',profile);
+
+
+
+
+
+        }).catch(function(err){
+
+            console.log(err)
+
+        });
+
+    }
+
+    var logout = function() {
+
+        profile = null;
+
+       $rootScope.$broadcast('user:logged',profile);
+        $state.go('root.login', {loginMsg: 'Logged out!'});
+
+
+
+
+        return true;
+
+    }
+
+    var isLoggedIn = function() {
+
+    var deferred = $q.defer();
+
+
+      if(profile) {
+             deferred.resolve('logged_in');
+        }
+        else {
+             deferred.reject('not_logged');
+        }
+
+        return deferred.promise;
+
+    }
+
+
+    return({
+
+        login: login,
+        logout: logout,
+        isLoggedIn: isLoggedIn,
+        profile: profile
+
+    });
+
+
+});
+
+
+app.config( function($stateProvider, $urlRouterProvider){
 
   $urlRouterProvider.otherwise('/home/main');
 
@@ -26,12 +123,25 @@ app.config(function($stateProvider, $urlRouterProvider){
 
    .state('root.add',{
     url: '/add-cell' ,
+    data: {
+     pageTitle: 'Add Cell'
+    },
     views: {
      'content': {
      templateUrl: "views/add.html",
      controller: 'addphones'
         }
-    }
+    },
+      resolve: {
+
+           user: function(Auth) {
+
+               return Auth.isLoggedIn();
+
+           }
+
+      }
+
   })
 
 
@@ -45,9 +155,26 @@ app.config(function($stateProvider, $urlRouterProvider){
     }
   })
 
+  .state('root.login',{
+    url: '/login' ,
+    params: {
+        loginMsg: null
+    },
+    views: {
+     'content': {
+     templateUrl: "views/login.html",
+     controller: 'login'
+        }
+    }
+  })
+
 
 
 });
+
+
+
+
 
 
 app.controller('cellphones', function($scope,$http){
@@ -65,15 +192,54 @@ app.controller('cellphones', function($scope,$http){
 });
 
 
-app.controller('global', function($scope){
+app.controller('global', function($scope, Auth){
 
+     // init state
+    $scope.auth = Auth.profile;
+
+
+   // listen for user logging status
+    $scope.$on('user:logged', function(event,data){
+
+      $scope.auth = data;
+
+    });
+
+   $scope.logout = function(){
+        Auth.logout();
+    }
+
+
+
+});
+
+app.controller('login', function($scope,$http, Auth,$stateParams,$state){
+
+
+    $scope.customError = $stateParams.loginMsg; // or $state.params.loginError
+
+
+
+    $scope.test = "works";
+    $scope.email = 'demo@demo.com';
+    $scope.password = 'demo0606';
+
+
+    $scope.loginuser = function(){
+
+    Auth.login($scope.email, $scope.password);
+
+
+    }
 
 
 
 });
 
 
-app.controller('addphones', function($scope,$http, $window){
+app.controller('addphones', function($scope,$http, $window, Auth){
+
+
 
 
     $scope.form = {
@@ -85,6 +251,7 @@ app.controller('addphones', function($scope,$http, $window){
 
 
     }
+
 
 
     $scope.submit = function(isValid) {
@@ -130,7 +297,7 @@ app.controller('addphones', function($scope,$http, $window){
 
         }).catch(function(err){
 
-            alert(err);
+            console.log(err);
 
 
         });
@@ -157,11 +324,11 @@ app.controller('addphones', function($scope,$http, $window){
 app.controller('singlephones', function($scope, $stateParams,$http){
 
 
-    $scope.key = $stateParams.key;
+     $scope.key = $stateParams.key;
 
-    $scope.itemdata = "";
+     $scope.itemdata = "";
 
-    $http.get('/api/cellphones/' + $scope.key).then(function(response){
+     $http.get('/api/cellphones/' + $scope.key).then(function(response){
 
      $scope.itemdata = response.data;
 
@@ -169,7 +336,7 @@ app.controller('singlephones', function($scope, $stateParams,$http){
 
     }).catch(function(err){
 
-           aleret(err);
+           console.log(err);
     });
 
 
@@ -198,5 +365,7 @@ app.directive('validFile',['$parse', function($parse){
     }
   }
 }]);
+
+
 
 
