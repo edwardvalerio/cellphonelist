@@ -1,62 +1,40 @@
 <div class="container">
-
     <div class="col-sm-8 col-sm-offset-2">
         <div class="page-header">
-            <h1>Cellphone List</h1>
-        </div>
-
+            <h1>Cellphone List</h1> </div>
         <div class="row">
-
             <div class="col-sm-9">
-
-                <input type="text" placeholder="Search..." class="form-control" ng-model="mquery" >
-
-            </div>
-
+                <input type="text" placeholder="Search..." class="form-control" ng-model="mquery"> </div>
             <div class="col-sm-3">Items per page:
-
-            <select ng-model="pagesize" ng-options="x for x in pagesizes">
-            </select>
-
-
+                <select ng-model="pagesize" ng-options="x for x in pagesizes"> </select>
             </div>
-
         </div>
-
         <hr>
-
-        <ul class="list-group" >
+        <ul class="list-group">
             <li class="list-group-item" ng-repeat="(key,value) in data | filter:mquery | limitTo:pagesize:currentPage*pagesize">
-
                 <div class="media">
-                    <div class="col-sm-2">
-                        <img src="{{value.imgURL}}" class="media-object" width="100px">
-                    </div>
+                    <div class="col-sm-2"> <img src="{{value.imgURL}}" class="media-object" width="100px"> </div>
                     <div class="col-sm-7">
                         <h4 class="media-heading">{{value.name}}</h4>
                         <p><b>{{value.brand}}</b>: {{value.description}}</p>
                     </div>
-                  <div class="col-sm-3">
-                     <div class="btn-group">
-                            <a type="button" ui-sref="root.single({ key: value.key})" class="btn btn-primary">View</a>
-                            <button type="button" class="btn btn-danger" ng-click="delete(value.key)" >Delete</button>
+                    <div class="col-sm-3">
+                        <div class="btn-group"> <a type="button" ui-sref="root.single({ key: value.key})" class="btn btn-primary">View</a>
+                            <button type="button" class="btn btn-danger" ng-click="delete(value.key)">Delete</button>
                         </div>
                     </div>
-          </div>
-         </li>
+                </div>
+            </li>
         </ul>
-
         <div class="text-center">
-
-            <ul class="pagination"><li ng-class="{'disabled': currentPage == 0  }" ng-click="prev()"><a href="javascript:void(0)" > << prev </a></li>
-      <li  ><a   href="javascript:void(0)">{{currentPage}}</a></li>
-
-                <li ng-click="next()"><a href="javascript:void(0)"> next >> </a></li>
-     </ul>
-
+            <ul class="pagination">
+                <li ng-class="{'disabled': currentPage == 0  }" ng-click="prev()">
+                    <a href="javascript:void(0)" class="btn ">
+                        &laquo; prev </a>
+                </li>
+                <li><a href="javascript:void(0)">{{currentPage+1}}/{{total()}}</a></li>
+                <li ng-class="{'disabled': currentPage == total()-1   }" ng-click="next()"><a class="btn" href="javascript:void(0)"> next &raquo; </a></li>
+            </ul>
         </div>
-
-
-
     </div>
 </div>

@@ -202,6 +202,14 @@ app.controller('cellphones', function ($scope, $http) {
 
     $scope.setpagination = function() {
           $scope.totalPages = Math.ceil((($scope.data.length-1)/$scope.pagesize));
+
+
+    }
+
+     $scope.total = function() {
+          $scope.totalPages = Math.ceil((($scope.data.length-1)/$scope.pagesize));
+         return $scope.totalPages;
+
     }
 
     $scope.next = function() {
