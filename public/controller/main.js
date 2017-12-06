@@ -31,7 +31,7 @@ app.factory('Auth', function ($http, $q, $timeout, $state, $rootScope, $window, 
             $cookies.put('profile', profile, {
                 'expires': expiration
             }); /* 1 = 1 minute */
-            $state.go('root.add');
+            $state.go('root.main');
             $rootScope.$broadcast('user:logged', profile);
         }).catch(function (err) {
             console.log(err)
@@ -138,14 +138,29 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 });
 
 
+app.controller('global', function ($scope, Auth) {
+
+    /* init state */
+    $scope.auth = Auth.profile; /* listen for user logging status broadcast */
+    $scope.$on('user:logged', function (event, data) {
+        $scope.auth = data;
+    });
+    $scope.logout = function () {
+        Auth.logout();
+    }
+});
+
+
+
 app.controller('cellphones', function ($scope, $http) {
 
     $scope.pagesizes = [3,5,10,15];
     $scope.pagesize = $scope.pagesizes[0];
+    $scope.mquery = '';
     $scope.currentPage = 0;
     $scope.totalPages = 0;
-
     $scope.data = [];
+    $scope.originalData = [];
 
 
 
@@ -153,8 +168,6 @@ app.controller('cellphones', function ($scope, $http) {
     $scope.loaditems = function() {
 
     $http.get('/api/cellphones').then(function (response) {
-
-
 
         if($scope.data != null) {
           $scope.data.length = 0;
@@ -164,12 +177,12 @@ app.controller('cellphones', function ($scope, $http) {
            var arr = [];
             angular.forEach(response.data, function(value, key){
                 arr.push(value);
-
             });
 
          $scope.data = arr.slice().reverse();
+         $scope.originalData = arr.slice().reverse();
 
-            $scope.setpagination();
+         $scope.setpagination();
 
 
     }).catch(function (err) {
@@ -194,21 +207,49 @@ app.controller('cellphones', function ($scope, $http) {
             console.log(err);
 
         });
-
-
+    }
     }
 
-    }
+    // filtering
+
+    $scope.$watch('mquery', function(newv, oldv){
+
+
+        $scope.data = $scope.originalData.filter(function (el) {
+
+            newv = angular.lowercase(newv);
+            var name = angular.lowercase(el.name);
+            var description = angular.lowercase(el.description);
+            var brand = angular.lowercase(el.brand);
+
+
+
+            if(name.indexOf(newv) >= 0 || description.indexOf(newv) >= 0 || brand.indexOf(newv) >= 0  ) {
+               return el;
+               }
+            });
+    });
+
+
+    // pagination stuff
 
     $scope.setpagination = function() {
           $scope.totalPages = Math.ceil((($scope.data.length-1)/$scope.pagesize));
-
 
     }
 
      $scope.total = function() {
           $scope.totalPages = Math.ceil((($scope.data.length-1)/$scope.pagesize));
-         return $scope.totalPages;
+         if($scope.totalPages == 0){
+
+            return 1;
+
+            }
+            else {
+
+             return $scope.totalPages;
+            }
+
 
     }
 
@@ -229,23 +270,14 @@ app.controller('cellphones', function ($scope, $http) {
     }
 
 
+    // execute functions
+
     $scope.loaditems();
 
 
 });
 
 
-app.controller('global', function ($scope, Auth) {
-
-    /* init state */
-    $scope.auth = Auth.profile; /* listen for user logging status broadcast */
-    $scope.$on('user:logged', function (event, data) {
-        $scope.auth = data;
-    });
-    $scope.logout = function () {
-        Auth.logout();
-    }
-});
 
 
 app.controller('login', function ($scope, $http, Auth, $stateParams, $state) {

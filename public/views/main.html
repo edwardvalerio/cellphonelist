@@ -11,7 +11,7 @@
         </div>
         <hr>
         <ul class="list-group">
-            <li class="list-group-item" ng-repeat="(key,value) in data | filter:mquery | limitTo:pagesize:currentPage*pagesize">
+            <li class="list-group-item" ng-repeat="(key,value) in data | limitTo:pagesize:currentPage*pagesize">
                 <div class="media" id="media">
                     <div class="col-sm-2"> <div class="image-container"> <img src="{{value.imgURL}}" class="media-object" > </div> </div>
                     <div class="col-sm-7">
@@ -27,7 +27,7 @@
             </li>
         </ul>
         <div class="text-center">
-            <ul ng-if="!mquery" class="pagination">
+            <ul ng-if="!mquerys" class="pagination">
                 <li ng-class="{'disabled': currentPage == 0  }" ng-click="prev()">
                     <a href="javascript:void(0)" class="btn ">
                         &laquo; prev </a>
