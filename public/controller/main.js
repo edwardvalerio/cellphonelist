@@ -214,6 +214,8 @@ app.controller('cellphones', function ($scope, $http) {
 
     $scope.$watch('mquery', function(newv, oldv){
 
+        // set the index page at 0 since we ill treat this as new query
+        $scope.currentPage = 0;
 
         $scope.data = $scope.originalData.filter(function (el) {
 

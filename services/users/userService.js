@@ -20,10 +20,6 @@ function authenticate(email, password, callback) {
       });
 
 
-
-
-
-
 }
 
 module.exports = {
