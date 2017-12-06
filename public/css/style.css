@@ -1,0 +1,24 @@
+/** GENERAL STYLES **/
+
+
+
+#media {
+
+    min-height: 120px;
+
+}
+.image-container {
+
+    width: 100%;
+    text-align: center;
+    height: 120px;
+
+
+}
+
+.image-container > img {
+
+    max-width: 100%;
+    max-height: 120px;
+    text-align: center;
+}
