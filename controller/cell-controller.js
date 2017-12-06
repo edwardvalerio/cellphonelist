@@ -75,18 +75,41 @@ var application = function(app,db, bucket, storage, userService) {
 
         var key = req.params.key;
 
-        db.child(key).remove(function (err) {
-            if(err){
+        // perform fileName lookup based on key..
 
+        db.child(key).once('value', function(snapshot){
+
+        var data = snapshot.val();
+        var fileLocation = 'images/' + data.fileName;
+
+            bucket.file(fileLocation).delete(function(err,response){
+
+
+
+                    // successfully removed the file then proceed to delete the data.
+
+            db.child(key).remove(function (err) {
+            if(err){
                 res.status(500).send( err );
             }
             else {
 
-                console.log('detete');
                  res.send({status: 'ok' });
             }
+            });
 
-       });
+
+
+
+            });
+
+
+
+        }, function (errorObject) {
+        res.send( errorObject.code );
+
+        });
+
 
 
 
@@ -158,6 +181,7 @@ var addToDBTask = function(req,res,db, bucket, storage, fPath, originalName) {
             // add the key
             data['key'] = key;
             data['imgURL'] = createPublicFileURL(uploadTo);
+            data['fileName'] = originalName;
 
             newRef.set(data, function(err) {
 

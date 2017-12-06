@@ -199,7 +199,7 @@ app.controller('cellphones', function ($scope, $http) {
 
       $http.delete('/api/cellphones/'+key).then(function(response){
 
-            console.log('deleted item key '+ key);
+
             $scope.loaditems();
 
         }).catch(function(err){
