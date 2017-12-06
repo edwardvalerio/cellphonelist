@@ -1,27 +1,25 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="root.main" >Cellphone Directory</a>
+        </div>
 
+        <ul class="nav navbar-nav navbar-right">
+            <li ui-sref-active="active" ng-if="auth">
+                <a ui-sref="root.main"><span class="glyphicon glyphicon-list"></span> Cellphone List</a>
+            </li>
+            <li ui-sref-active="active" ng-if="!auth">
+                <a ui-sref="root.login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            </li>
+            <li ui-sref-active="active" ng-if="auth">
+                <a ui-sref="root.add"><span class="glyphicon glyphicon-phone"></span> Add Cellphone</a>
+            </li>
+            <li ui-sref-active="active" ng-if="auth">
+                <a href="javascript:void(0)" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-
-    <div id="nav">
-
-    <ul>
-        <li>
-            <a ui-sref="root.main">Main</a>
-        </li>
-        <li ng-if="!auth" >
-            <a ui-sref="root.login">Login</a>
-        </li>
-        <li>
-            <a ui-sref="root.add">Add CellPhone</a>
-        </li>
-        <li ng-if="auth">
-            <a href="javascript:void(0)" ng-click="logout()">Logout</a>
-        </li>
-
-    </ul>
-</div>
-
-<br><br>
-
-<div ui-view="content"></div>
-
+<div ui-view="content" class="container"></div>
 

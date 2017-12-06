@@ -1,38 +1,23 @@
-    <center>
-    <h1>Add Cellphone Form</h1>
-    </center>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="page-header">
+                <h1>Add Cellphone</h1>
+            </div>
+            <div id="customError" ng-show="customNotification" class="alert alert-success"> {{ customNotification }} </div>
+            <div id="form">
+                <form class="form" name="form">
+                    <div class="form-group"> <label for="cellname">Cellphone name </label> <input type="text" id="cellname" placeholder="Cellphone name" class="form-control" required autofocus ng-model="form.name" /> </div>
+                    <div class="form-group"> <label for="cellbrad">Cellphone brand </label> <input type="text" placeholder="Cellphone brand" class="form-control" id="cellbrand" required ng-model="form.brand" /> </div>
+                    <div class="form-group"> <label for="description">Description </label> <textarea class="form-control" ng-model="form.description" required type="textarea" id="description"></textarea> </div>
+                    <div class="form-group"> <label for="file">Upload image </label>
 
 
-    <center>
+                        <input id="file" type="file"  class="form-control"  ng-model="form.file" valid-file ng-required="true" />
 
 
-
-
-    <div id="form">
-
-
-        <form class="form" name="form">
-
-            <input type="text" placeholder="Cell Name" required autofocus ng-model="form.name" /><br><br>
-            <input type="text" placeholder="Phone Brand" required ng-model="form.brand" /><br><br>
-
-            description:<br>
-            <textarea ng-model="form.description" required type="textarea"></textarea>
-
-
-            <br><br> upload image:<br>
-            <input id="file" type="file" ng-model="form.file" valid-file ng-required="true" />
-            <br><br>
-
-            <button ng-click="submit(form.$valid)">Submit</button>
-
-
-        </form>
-
-
-
-
+                       </div> <button ng-click="submit(form.$valid)" class="btn btn-lg btn-block btn-success">Submit</button> </form>
+            </div>
+        </div>
     </div>
-
-
-</center>
+</div>

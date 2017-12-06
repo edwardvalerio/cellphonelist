@@ -5,8 +5,6 @@ var fs = require('fs');
 
 
 
-
-
 var application = function(app,db, bucket, storage, userService) {
 
 
@@ -43,7 +41,7 @@ var application = function(app,db, bucket, storage, userService) {
 
     // API
 
-    // list
+    // get all list
     app.get('/api/cellphones', function(req,res){
 
         db.once('value', function(snapshot){
@@ -71,13 +69,34 @@ var application = function(app,db, bucket, storage, userService) {
          });
 
 
+        // delete
+
+      app.delete('/api/cellphones/:key', function(req,res){
+
+        var key = req.params.key;
+
+        db.child(key).remove(function (err) {
+            if(err){
+
+                res.status(500).send( err );
+            }
+            else {
+
+                console.log('detete');
+                 res.send({status: 'ok' });
+            }
+
+       });
+
+
+
+         });
+
+
       //add new
 
         app.post('/api/addphone', storage.any() , function(req,res){
 
-
-            console.log(req.body, 'Body');
-            console.log(req.files, 'files');
 
                 // rename file from multer
     var date = new Date().getTime();
