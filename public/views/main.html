@@ -13,7 +13,7 @@
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="(key,value) in data | limitTo:pagesize:currentPage*pagesize">
                 <div class="media" id="media">
-                    <div class="col-sm-2"> <div class="image-container"> <img src="{{value.imgURL}}" class="media-object" > </div> </div>
+                    <div class="col-sm-2"> <div class="image-container"> <img ng-src="{{value.imgURL}}" class="media-object" > </div> </div>
                     <div class="col-sm-7">
                         <h4 class="media-heading">{{value.name}}</h4>
                         <p><b>{{value.brand}}</b>: {{value.description}}</p>
