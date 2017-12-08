@@ -86,7 +86,7 @@ var application = function(app,db, bucket, storage, userService) {
 
 
 
-                    // successfully removed the file then proceed to delete the data.
+          // successfully removed the file then proceed to delete the data.
 
             db.child(key).remove(function (err) {
             if(err){
@@ -120,6 +120,9 @@ var application = function(app,db, bucket, storage, userService) {
 
         app.post('/api/addphone', storage.any() , function(req,res){
 
+
+              console.log(req.body, 'Body');
+              console.log(req.files, 'files');
 
                 // rename file from multer
     var date = new Date().getTime();
