@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
-var port = 3000;
+
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
 var bodyParser = require('body-parser');
 var routeController = require('./controller/cell-controller');
 
@@ -60,5 +63,5 @@ app.use(bodyParser.json());
 routeController(app, database, bucket, storage, userservice);
 
 
-app.listen(port);
+app.listen(port,ip);
 console.log('listening on port: ' + port);
