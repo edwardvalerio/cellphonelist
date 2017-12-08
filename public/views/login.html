@@ -4,7 +4,8 @@
             <div class="page-header">
                 <h1>Login</h1>
             </div>
-            <div id="customError" ng-show="customError" class="alert alert-success"> {{ customError }} </div>
+            <div id="customMsg" ng-show="customMsg" class="alert alert-success"> {{ customMsg }} </div>
+             <div id="customErr" ng-show="customErr" class="alert alert-danger"> {{ customErr }} </div>
             <form ng-submit="loginuser()" name="login">
                 <div class="form-group"> <label for="email">Email address:</label> <input type="text" ng-model="email" placeholder="Email" id="email" required class="form-control" /> </div>
                 <div class="form-group"> <label for="pwd">Password:</label> <input type="password" ng-model="password" placeholder="Password" required class="form-control" id="pwd"> </div> <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button> </form>

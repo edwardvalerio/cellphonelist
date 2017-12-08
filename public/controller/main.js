@@ -7,7 +7,8 @@ app.run(function ($state, $rootScope) {
         switch (error) {
             case 'not_logged':
                 $state.go('root.login', {
-                    loginMsg: 'You need to be logged in to access that page!'
+                    loginErr: 'You need to be logged in to access this page!',
+                    loginMsg: null
                 });
         }
     });
@@ -34,7 +35,13 @@ app.factory('Auth', function ($http, $q, $timeout, $state, $rootScope, $window, 
             $state.go('root.main');
             $rootScope.$broadcast('user:logged', profile);
         }).catch(function (err) {
-            console.log(err)
+            console.log(err.data.message);
+
+            $state.go('root.login', {
+            loginErr: err.data.message,
+            loginMsg: null
+            });
+
         });
     }
 
@@ -126,7 +133,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     }).state('root.login', {
         url: '/login',
         params: {
-            loginMsg: null
+            loginMsg: null,
+            loginErr: null
         },
         views: {
             'content': {
@@ -283,9 +291,10 @@ app.controller('cellphones', function ($scope, $http) {
 
 
 app.controller('login', function ($scope, $http, Auth, $stateParams, $state) {
-    $scope.customError = $stateParams.loginMsg; /* or $state.params.loginError */
-    $scope.email = 'demo@demo.com';
-    $scope.password = 'demo0606';
+    $scope.customMsg = $stateParams.loginMsg; /* or $state.params.loginError */
+    $scope.customErr = $stateParams.loginErr;
+    $scope.email = '';
+    $scope.password = '';
     $scope.loginuser = function () {
         Auth.login($scope.email, $scope.password);
     }
