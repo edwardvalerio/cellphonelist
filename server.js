@@ -4,6 +4,7 @@ var app = express();
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
+
 var bodyParser = require('body-parser');
 var routeController = require('./controller/cell-controller');
 
@@ -11,9 +12,11 @@ var multer = require('multer');
 var storage = multer({ dest: './tmp' });
 
 
+
 // firebase
 var admin = require('firebase-admin');
-var serviceAccount = require('./services/credentials.json');
+ var serviceAccount = require('./services/credentials.json');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
